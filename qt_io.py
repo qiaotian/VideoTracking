@@ -5,6 +5,10 @@
 
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import KMeans
+from us import features
+
+from sklearn.cluster import KMeans
+from six.moves import urllib
 
 import numpy as np
 import cv2
@@ -77,7 +81,7 @@ def pooling(image):
 
 #cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer02.avi')
 #cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer03.avi')
-cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer04.avi')
+cap = cv2.VideoCapture('../../Downloads/usliverseq/volunteer04.avi')
 #cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer05.avi')
 
 # Define the codec and create VideoWriter object
@@ -96,12 +100,47 @@ while(cap.isOpened()):
     if ret==True:
         # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        # cv2.imwrite("%d.jpg" % (count) , image)
-        # count = count+1
-        # pooling
-        # pool = pooling(gray)
 
-        cv2.imshow('frame', image)
+        # expand the dim
+        if image.ndim == 3:
+            image = image[np.newaxis, ...] # (1,172,200,3)
+        # extract features
+        ftrs = features(image)
+        # kmeans to cluster
+        kmeans = KMeans(n_clusters=4)
+        kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
+
+        # show the image
+        disp = image[0]
+        disp.resize(disp.shape[0]*disp.shape[1], 3)
+        for i in xrange(len(kmeans.labels_)):
+            if kmeans.labels_[i] == 0:
+                disp[i] = [255,0,0]
+            elif kmeans.labels_[i] == 1:
+                disp[i] = [0,255,0]
+            elif kmeans.labels_[i] == 2:
+                disp[i] = [0,0,255]
+            elif kmeans.labels_[i] == 3:
+                disp[i] = [255,0,255]
+            elif kmeans.labels_[i] == 4:
+                disp[i] = [0,255,255]
+            elif kmeans.labels_[i] == 5:
+                disp[i] = [255,255,255]
+            else:
+                disp[i] = [255, 255, 0]
+            """
+            if kmeans.labels_[i] == 2:
+                disp[i] = [0, 255, 255]
+            else:
+                disp[i] = [0, 0, 0]
+            """
+        disp.resize(image.shape[1], image.shape[2], 3)
+        print(disp.shape)
+
+        cv2.imwrite('%d.jpg' %count, disp)
+        count = count+1
+
+        #cv2.imshow('frame', disp)
         #out.write(pool)
         # kmeans = KMeans(n_clusters=4)
         # kmeans.fit(gray.shape)

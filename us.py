@@ -3,46 +3,129 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from sklearn.cluster import KMeans
 from six.moves import urllib
 
-import gzip
-import os
-import re
-import sys
-import tarfile
-import scipy
+#import gzip
+#import os
+#import re
+#import sys
+#import tarfile
+from scipy.stats import entropy
+#from scipy import stats
 import tensorflow as tf
+import numpy as np
 import argparse
+import cv2
 
 import us_input
 
 # Global constants describing the US data
 
-def inference(image):
-    # mean
-    mean = tf.nn.avg_pool(image, ksize=[5,5,1],\
-                          strides=[1,1,1], padding='SAME',\
-                          data_format='NHWC', name='mean')
+def features(image):
+    sess = tf.Session()
+    #height = image.shape[1];
+    #width  = image.shape[2];
 
-    # standard deviation
-    aver = (image - mean)**2//(25-1)
-    kernel = tf.get_variable('kernel', shape=[5,5,1],\
-                          initializer=tf.constant_initializer(value=1.0, dtype=tf.float))
-    stddev = tf.nn.conv2d(aver, kernel, strides=[1,1,1], padding='SAME', use_cudnn_on_gpu=None, data_format=None, name='stddev')
+    image = tf.convert_to_tensor(image, dtype=tf.float32)
 
-    # entropy
-    entropy = np.zeros((image.shape.height, image.shape.width))
-    for i in image.shape.height:
-        for j in image.shape.width:
-            if(i>1 && i<image.shape.height-2 && j>1 && j<image.shape.width-2):
-                [i,j] = scipy.stats.entropy(image[i-2:i+2, j-2:j+2].reshape((5*5,1)))
-    ftrs = np.concatenate(mean, stddev, entropy)
+    """ mean """
+    mean = tf.to_float(tf.nn.avg_pool(image,\
+                          ksize=[1,5,5,1],\
+                          strides=[1,1,1,1],\
+                          padding='SAME',\
+                          data_format='NHWC', name=None), name='ToFloat')
+    print('Dim of feature1 is:', mean.get_shape())
+
+    """ standard deviation """
+    stddev = tf.nn.conv2d(tf.to_float((image - mean)**2//(25-1), name='ToFloat'),\
+                          tf.ones([5,5,3,3],\
+                          dtype=tf.float32),\
+                          strides=[1,1,1,1],\
+                          padding='SAME')
+    print('Dim of feature2 is:', stddev.get_shape())
+
+    """ entropy """
+    """
+    entr = np.zeros((height, width))
+    for i in range(height):
+        for j in range(width):
+            if(i>1 and i<height-2 and j>1 and j<width-2):
+                temp = tf.reshape(image[0, i-2:i+3, j-2:j+3, 0], [25,1]).eval(session=tf.Session()) # (25,1)
+                entr[i,j] = entropy(temp)
+
+    ftrs = np.concatenate((mean, stddev, entr), axis=0)
+    """
+
+    ftrs = tf.concat(3, [mean, stddev])
+    print('Dim of features is:', ftrs.get_shape())
+
+    # convert tensor to numpy array
+    ftrs = sess.run(ftrs)
+
+    return ftrs
+
 
 def main(argv=None):
+    sess = tf.Session()
+
     parser = argparse.ArgumentParser(
-        descrption='Extract and return features from input image',
+        description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
+    parser.add_argument('--image')
+    args = parser.parse_args()
+
+    image = cv2.imread(args.image)/255.0
+
+    # expand the dim
+    if image.ndim == 3:
+        image = image[np.newaxis, ...] # (1,172,200,3)
+
+    # extract features
+    ftrs = features(image)
+
+    # kmeans to cluster
+    kmeans = KMeans(n_clusters=4)
+    kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
+
+    # show the image
+    disp = image[0]
+    disp.resize(disp.shape[0]*disp.shape[1], 3)
+    for i in xrange(len(kmeans.labels_)):
+        if kmeans.labels_[i] == 0:
+            disp[i] = [255,0,0]
+        elif kmeans.labels_[i] == 1:
+            disp[i] = [0,255,0]
+        elif kmeans.labels_[i] == 2:
+            disp[i] = [0,0,255]
+        elif kmeans.labels_[i] == 3:
+            disp[i] = [255,0,255]
+        elif kmeans.labels_[i] == 4:
+            disp[i] = [0,255,255]
+        elif kmeans.labels_[i] == 5:
+            disp[i] = [255,255,255]
+        else:
+            disp[i] = [255, 255, 0]
+        """
+        if kmeans.labels_[i] == 1:
+            disp[i] = [0, 255, 0]
+        else:
+            disp[i] = [0, 0, 0]
+        """
+    disp.resize(image.shape[1], image.shape[2], 3)
+    print(disp.shape)
+    cv2.imwrite("out.jpg", disp)
+
 
 if __name__ == '__main__':
     main()
+
+
+    # fearures extract
+    # filenames = [args.image]
+    # Create a queue that produces the filenames to read
+    # filename_queue = tf.train.string_input_producer(filenames)
+    # reader = tf.WholeFileReader()
+    # key, value = reader.read(filename_queue)
+    # img = tf.image.decode_jpeg(value, channels=3)
