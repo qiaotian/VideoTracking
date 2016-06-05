@@ -137,7 +137,7 @@ while(cap.isOpened()):
         disp.resize(image.shape[1], image.shape[2], 3)
         print(disp.shape)
 
-        cv2.imwrite('%d.jpg' %count, disp)
+        cv2.imwrite('../out/%d.jpg' %count, disp)
         count = count+1
 
         #cv2.imshow('frame', disp)

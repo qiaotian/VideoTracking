@@ -1,3 +1,23 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+# @Author: Tian Qiao
+# @Date:   2016-06-01T14:54:45+08:00
+# @Email:  qiaotian@me.com
+# @Last modified by:   Tian Qiao
+# @Last modified time: 2016-06-05T10:45:09+08:00
+# @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+
+
+import tensorflow as tf
+import numpy as np
+import argparse
+import cv2
+#import gzip
+#import os
+#import re
+#import sys
+#import tarfile
+
 # pylint: disable=missing-docstring
 from __future__ import absolute_import
 from __future__ import division
@@ -5,27 +25,12 @@ from __future__ import print_function
 
 from sklearn.cluster import KMeans
 from six.moves import urllib
-
-#import gzip
-#import os
-#import re
-#import sys
-#import tarfile
 from scipy.stats import entropy
-#from scipy import stats
-import tensorflow as tf
-import numpy as np
-import argparse
-import cv2
-
-import us_input
 
 # Global constants describing the US data
 
 def features(image):
     sess = tf.Session()
-    #height = image.shape[1];
-    #width  = image.shape[2];
 
     image = tf.convert_to_tensor(image, dtype=tf.float32)
 
@@ -78,20 +83,23 @@ def main(argv=None):
 
     image = cv2.imread(args.image)/255.0
 
+    # set roi of the input
+    roi = image[20:, 50:, :]
+
     # expand the dim
-    if image.ndim == 3:
-        image = image[np.newaxis, ...] # (1,172,200,3)
+    if roi.ndim == 3:
+        roi = roi[np.newaxis, ...] # (1,172,200,3)
 
     # extract features
-    ftrs = features(image)
+    ftrs = features(roi)
 
     # kmeans to cluster
     kmeans = KMeans(n_clusters=4)
     kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
 
     # show the image
-    disp = image[0]
-    disp.resize(disp.shape[0]*disp.shape[1], 3)
+    disp = roi.reshape((roi.shape[0]*roi.shape[1]*roi.shape[2], roi.shape[3]))
+
     for i in xrange(len(kmeans.labels_)):
         if kmeans.labels_[i] == 0:
             disp[i] = [255,0,0]
@@ -113,7 +121,7 @@ def main(argv=None):
         else:
             disp[i] = [0, 0, 0]
         """
-    disp.resize(image.shape[1], image.shape[2], 3)
+    disp.resize(roi.shape[1], roi.shape[2], 3)
     print(disp.shape)
     cv2.imwrite("out.jpg", disp)
 
