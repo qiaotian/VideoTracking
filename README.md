@@ -9,5 +9,3 @@ Nine 2D ultrasound sequences of the liver of healthy volunteers were acquired du
 [2] V. De Luca, M. Tschannen, G. SzÃ©kely, C. Tanner, "A Learning-based Approach for Fast and Robust Vessel Tracking in Long Ultrasound Sequences", Medical Image Computing and Computer-Assisted Intervention, Springer. volume of LNCS 8149, pp. 518-525, 2013.
 
 ## Methods
-
-## Fuck you!
