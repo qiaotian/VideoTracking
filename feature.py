@@ -3,8 +3,8 @@
 # @Author: Tian Qiao
 # @Date:   2016-06-01T14:54:45+08:00
 # @Email:  qiaotian@me.com
-# @Last modified by:   Tian Qiao
-# @Last modified time: 2016-06-05T10:45:09+08:00
+# @Last modified by:   root
+# @Last modified time: 2016-06-05T14:00:49+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -67,7 +67,6 @@ def features(image):
 
     # convert tensor to numpy array
     ftrs = sess.run(ftrs)
-
     return ftrs
 
 
@@ -123,7 +122,7 @@ def main(argv=None):
         """
     disp.resize(roi.shape[1], roi.shape[2], 3)
     print(disp.shape)
-    cv2.imwrite("out.jpg", disp)
+    cv2.imwrite("./res/out.jpg", disp)
 
 
 if __name__ == '__main__':
