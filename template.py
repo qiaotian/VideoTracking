@@ -4,14 +4,20 @@
 # @Date:   2016-06-05T14:01:18+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-05T16:10:45+08:00
+# @Last modified time: 2016-06-07T15:55:36+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 import cv2
 import numpy as np
 import argparse
 import matplotlib.pyplot as plt
+import tensorflow as tf
+
 from numpy import amin
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
 
 def template(image):
     return
@@ -33,42 +39,25 @@ def corre_coefficient(source, template):
         print('The template image is larger than input image')
         return None
 
+    # 1. calculate the normalized template image
+    aver_template = np.sum(template) // (temp_height*temp_width)
+    norm_template = template - np.ones((temp_height, temp_width), dtype=np.float32) * aver_template
+
+    # 2. calculate the normalized source image
+    norm_source = np.zeros((temp_height, temp_width))
     for i in range(src_height):
         for j in range(src_width):
             # calculate correlated coefficient for every pixel in target image
-            src_mean = 0
-            temp_mean = 0
-            for m in range(temp_height):
-                for n in range(temp_width):
-                    if i+m>=src_height or j+n>=src_width:
-                        src_mean = src_mean+0
-                        temp_mean = temp_mean+template[m,n]
-                        continue
-                    src_mean = src_mean+source[m,n]
-                    temp_mean = temp_mean+template[m,n]
-            src_mean = src_mean/(temp_height*temp_width)
-            temp_mean = temp_mean/(temp_height*temp_width)
+            norm_source[:min(temp_height, src_height-i), :min(temp_width, src_width-j)] =\
+                source[i:min(i+temp_height, src_height), j:min(j+temp_width, src_width)]
 
-            # construct a new array that pads zeros to the matrix if index beyond boundry
-            padding = np.zeros((temp_height, temp_width))
-            #x = source[i:amin([temp_height, src_height-i]), j:amin([temp_width, src_width-i])]
-            #y = padding[i:amin([temp_height, src_height-j]), j:amin([temp_width, src_width-j])]
-            #print(x.shape)
-            #print(y.shape)
+            aver_source = np.sum(norm_source) // (temp_height*temp_width)
+            norm_source = norm_source - np.ones((temp_height, temp_width), dtype=np.float32) * aver_source
+            cv2.imshow('normal source image', norm_source)
 
-            padding[:min(temp_height, src_height-i), :min(temp_width, src_width-j)] = source[i:min(i+temp_height, src_height), j:min(j+temp_width, src_width)]
-
-            norm_src = padding - np.ones((temp_height, temp_width))*src_mean
-            norm_temp = template-np.ones((temp_height, temp_width))*temp_mean
-            factor0 = 0
-            factor1 = 0
-            factor2 = 0
-            for m in range(temp_height):
-                for n in range(temp_width):
-                    factor0 = factor0 + norm_src[m,n]*norm_temp[m,n]
-                    factor1 = factor1 + norm_src[m,n]*norm_src[m,n]
-                    factor2 = factor2 + norm_temp[m,n]*norm_temp[m,n]
-            correlated_coefficient = factor0//(factor1+1)//(factor2+1)
+            correlated_coefficient = np.sum(np.multiply(norm_source, norm_template))//\
+                                     (np.sum(np.square(norm_source))+1)*\
+                                     (np.sum(np.square(norm_template))+1)
             ans[i,j] = correlated_coefficient
     return ans
 
@@ -77,16 +66,42 @@ def main():
         description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument('--src', help='source image')
-    parser.add_argument('--tmp', help='template image')
+    parser.add_argument('--src', help='source image', default='./res/test1.jpg')
+    parser.add_argument('--tmp', help='template image', default='./res/template40x20.jpg')
     args = parser.parse_args()
 
     src = cv2.cvtColor(cv2.imread(args.src), cv2.COLOR_RGB2GRAY) # single channel image
     tmp = cv2.cvtColor(cv2.imread(args.tmp), cv2.COLOR_RGB2GRAY) # single channel image
 
-    cc = corre_coefficient(src, tmp)
-    print(cc.shape)
+    #cv2.imshow('source image', src)
+    #cv2.imshow('template image', tmp)
 
+    #cc = corre_coefficient(src, tmp)
+    #print(cc.shape)
 
+    # plot the data
+    """
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    X = np.arange(0,3)
+    Y = np.arange(0,3)
+    X, Y = np.meshgrid(X,Y)
+    Z = X+Y
+    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False)
+    ax.set_zlim(-1.01, 1.01)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    plt.show()
+    """
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    X = list(range(1,11)) for x in range(src.shape[0])
+    Y = list(range(1,11)) for x in range(src.shape[1])
+    Z = np.ones(src.shape[0], src.shape[1])
+    plt.show()
+    """
 if __name__ == '__main__':
     main()

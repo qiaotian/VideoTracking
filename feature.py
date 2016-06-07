@@ -3,10 +3,13 @@
 # @Author: Tian Qiao
 # @Date:   2016-06-01T14:54:45+08:00
 # @Email:  qiaotian@me.com
-# @Last modified by:   root
-# @Last modified time: 2016-06-05T14:00:49+08:00
+# @Last modified by:   qiaotian
+# @Last modified time: 2016-06-07T11:16:06+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
@@ -19,9 +22,6 @@ import cv2
 #import tarfile
 
 # pylint: disable=missing-docstring
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from sklearn.cluster import KMeans
 from six.moves import urllib

@@ -8,21 +8,19 @@
 
 
 import numpy as np
+import tensorflow as tf
 from timeit import default_timer as timer
-
-def VectorAdd(a, b, c):
-    for i in xrange(a.size):
-        c[i] = a[i] + b[i]
 
 def main():
     N = 32000000
 
-    A = np.ones(N, dtype=np.float32)
-    B = np.ones(N, dtype=np.float32)
-    C = np.zeros(N, dtype=np.float32)
+    A = tf.ones((N,1), tf.int32)
+    B = tf.ones((N,1), tf.int32)
+    C = tf.mul(A, B)
+    sess = tf.Session()
 
     start = timer()
-    VectorAdd(A, B, C)
+    sess.run(C)
     vectoradd_time = timer() - start
 
     print("VectorAdd took %f seconds" % vectoradd_time)
