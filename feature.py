@@ -4,7 +4,7 @@
 # @Date:   2016-06-01T14:54:45+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-12T16:33:36+08:00
+# @Last modified time: 2016-06-12T17:44:41+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 from __future__ import absolute_import
@@ -77,7 +77,7 @@ def main(argv=None):
         description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument('--image', default='./res/test1.jpg')
+    parser.add_argument('--image', default='../data/test1.jpg')
     args = parser.parse_args()
 
     image = cv2.imread(args.image)/255.0
@@ -122,7 +122,7 @@ def main(argv=None):
         """
     disp.resize(roi.shape[1], roi.shape[2], 3)
     print(disp.shape)
-    cv2.imwrite("./res/culsters_%s_out.jpg" % args.image[5:-4], disp)
+    cv2.imwrite("../data/culsters_%s_out.jpg" % args.image[5:-4], disp)
 
 if __name__ == '__main__':
     main()

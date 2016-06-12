@@ -2,7 +2,7 @@
 # @Date:   2016-06-05T10:21:02+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-12T17:38:58+08:00
+# @Last modified time: 2016-06-12T17:43:03+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -66,7 +66,7 @@ def main(arv=None):
         print('croped image is None')
     """
     parser.add_argument('--input_dir', default='../../Downloads/usliverseq/volunteer04.avi')
-    parser.add_argument('--output_dir', default='./res/converted_volunteer04.avi')
+    parser.add_argument('--output_dir', default='../ExperimentData/converted_volunteer04.avi')
     parser.add_argument('--x', type = int, default=300)
     parser.add_argument('--y', type = int, default=300)
     parser.add_argument('--w', type = int, default=300)

@@ -4,7 +4,7 @@
 # @Date:   2016-06-05T14:01:18+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-12T15:25:04+08:00
+# @Last modified time: 2016-06-12T17:44:11+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -70,8 +70,8 @@ def main():
         description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument('--src', help='source image', default='./res/test1.jpg')
-    parser.add_argument('--tmp', help='template image', default='./res/template114x167.jpg')
+    parser.add_argument('--src', help='source image', default='../data/test1.jpg')
+    parser.add_argument('--tmp', help='template image', default='../data/template114x167.jpg')
     args = parser.parse_args()
 
     src = cv2.cvtColor(cv2.imread(args.src), cv2.COLOR_RGB2GRAY) # single channel image
