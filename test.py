@@ -1,3 +1,12 @@
+# @Author: Tian Qiao <root>
+# @Date:   2016-05-27T07:31:13+08:00
+# @Email:  qiaotian@me.com
+# @Last modified by:   root
+# @Last modified time: 2016-06-12T16:26:39+08:00
+# @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+
+
+
  # -*- coding: utf-8 -*-
 # $File: io.py
 # $Date: Fri May 27 07:56:30 2016 +0800
@@ -5,17 +14,16 @@
 
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import KMeans
-from us import features
+from feature import features
 
 from sklearn.cluster import KMeans
 from six.moves import urllib
 
 import numpy as np
 import cv2
-import os
-import sys
 import matplotlib.pyplot as plt
 import argparse
+import time
 # import utils
 
 """
@@ -79,24 +87,23 @@ def pooling(image):
 
 #logger = logging.getLogger(__name__)
 
-#cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer02.avi')
-#cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer03.avi')
-cap = cv2.VideoCapture('../../Downloads/usliverseq/volunteer04.avi')
-#cap = cv2.VideoCapture('../../../Downloads/usliverseq/volunteer05.avi')
+input_filename = '../../Downloads/usliverseq/volunteer04.avi'
+output_filename = './res/' + time.strftime("%m%d-%H-%M-%S") + '.avi'
 
-# Define the codec and create VideoWriter object
-# height = 0
-# width = 0
-# if(cap.isOpened()):
-#    ret, frame = cap.read()
-#    height, width = frame.shape
+videoCapture = cv2.VideoCapture(input_filename)
 
-#fourcc = cv2.VideoWriter_fourcc(*'XVID')
-#out = cv2.VideoWriter('output.avi',fourcc, 20.0, (height,width))
+fps = videoCapture.get(cv2.cv.CV_CAP_PROP_FPS)
+size = (int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)),
+        int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
 
-count = 0
-while(cap.isOpened()):
-    ret, frame = cap.read()
+# fourcc = cv2.cv.CV_FOURCC('M', 'J', 'P', 'G') # doesn't work
+# fourcc = cv2.cv.CV_FOURCC('I', '4', '2', '0') # doesn't work
+fourcc = cv2.cv.FOURCC('8', 'B', 'P', 'S') # works
+videoWriter = cv2.VideoWriter(output_filename, fourcc, fps, size, True)
+
+while(videoCapture.isOpened()):
+    ret, frame = videoCapture.read()
+    print(frame.shape)
     if ret==True:
         # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -137,8 +144,7 @@ while(cap.isOpened()):
         disp.resize(image.shape[1], image.shape[2], 3)
         print(disp.shape)
 
-        cv2.imwrite('../out/%d.jpg' %count, disp)
-        count = count+1
+        videoWriter.write(disp)
 
         #cv2.imshow('frame', disp)
         #out.write(pool)
@@ -150,8 +156,8 @@ while(cap.isOpened()):
     else:
         break
 
-cap.release()
-#out.release()
+videoCapture.release()
+videoWriter.release()
 cv2.destroyAllWindows()
 
 

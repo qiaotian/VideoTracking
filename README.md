@@ -3,13 +3,13 @@
 @Date:   2016-05-26T21:07:10+08:00
 @Email:  qiaotian@me.com
 @Last modified by:   root
-@Last modified time: 2016-06-12T15:43:48+08:00
+@Last modified time: 2016-06-12T15:44:41+08:00
 @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 -->
 
 
 
-# Mornitoring Respiration Movements by Tracking Ultrasound Image Sequences
+# Tracking Ultrasound Image Sequences
 
 ## Dataset
 
