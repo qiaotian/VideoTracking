@@ -3,7 +3,7 @@
 @Date:   2016-05-26T21:07:10+08:00
 @Email:  qiaotian@me.com
 @Last modified by:   root
-@Last modified time: 2016-06-12T15:32:08+08:00
+@Last modified time: 2016-06-12T15:34:03+08:00
 @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 -->
 
@@ -24,5 +24,5 @@ CUDA, tensorflow, Numpy
 
 ## Methods
 
-![clusters](./res/cluster.jpg)
-![features](./res/features.jpg)
+![clusters](./res/cluster.jpg =300x300)
+![features](./res/features.jpg =300x300)
