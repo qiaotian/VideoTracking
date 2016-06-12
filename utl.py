@@ -2,7 +2,7 @@
 # @Date:   2016-06-05T10:21:02+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-13T00:15:49+08:00
+# @Last modified time: 2016-06-13T00:19:33+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -57,8 +57,8 @@ def crop_video_batch(input_dir, output_dir, x, y, w, h):
     list_dirs = os.walk(input_dir)
     for root, dirs, files in list_dirs:
         for f in files:
-            print f
             if f.endswith('mp4'):
+                print f
                 if input_dir.endswith('/'):
                     crop_video(input_dir+f, output_dir+'croped_'+f, x, y, w, h)
                 else:
