@@ -4,7 +4,7 @@
 # @Date:   2016-06-05T14:01:18+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-12T17:44:11+08:00
+# @Last modified time: 2016-06-12T18:29:23+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -70,8 +70,8 @@ def main():
         description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument('--src', help='source image', default='../data/test1.jpg')
-    parser.add_argument('--tmp', help='template image', default='../data/template114x167.jpg')
+    parser.add_argument('--src', help='source image', default='../ExperimentData/test1.jpg')
+    parser.add_argument('--tmp', help='template image', default='../ExperimentData/template114x167.jpg')
     args = parser.parse_args()
 
     src = cv2.cvtColor(cv2.imread(args.src), cv2.COLOR_RGB2GRAY) # single channel image
@@ -80,38 +80,41 @@ def main():
     cc = corre_coefficient(src, tmp)
 
     """ 3D colorbar plot """
+    """
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     X = np.arange(0, cc.shape[1], 1)
     Y = np.arange(0, cc.shape[0], 1)
     X, Y = np.meshgrid(X,Y)
     Z = cc
-    print(Z)
     #X = np.arange(-5, 5, 0.25)
     #Y = np.arange(-5, 5, 0.25)
     #X, Y = np.meshgrid(X, Y)
     #R = np.sqrt(X**2 + Y**2)
     #Z = np.sin(R)
 
-    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,
+    surf = ax.plot_surface(X, Y, Z, rstride=15, cstride=15, cmap=cm.coolwarm,
                        linewidth=0, antialiased=False)
     ax.set_zlim(-1.01, 1.01)
     ax.zaxis.set_major_locator(LinearLocator(10))
     ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
     fig.colorbar(surf, shrink=1, aspect=20) # set color bar location and size
     plt.show()
+    """
 
     """ 2D colorbar plot """
-    """
     fig = plt.gcf()
+
     ax = fig.add_subplot(111)
     X = np.arange(0, cc.shape[1], 1)
     Y = np.arange(0, cc.shape[0], 1)
     X,Y = np.meshgrid(X,Y)
     quadmesh = ax.pcolormesh(X,Y,cc)
-    quadmesh.set_clim(vmin=-0.2, vmax=1.0)
+    quadmesh.set_clim(vmin=-0.2, vmax=1.5)
     plt.show()
-    """
+
+    fig2 = plt.gcf()
+    plt.show(src)
 
     """ wireframe plot """
     """

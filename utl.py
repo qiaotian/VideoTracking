@@ -2,7 +2,7 @@
 # @Date:   2016-06-05T10:21:02+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-12T17:43:03+08:00
+# @Last modified time: 2016-06-12T23:43:18+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -27,16 +27,21 @@ def crop_image(input_dir, output_dir, x, y, w, h):
 def crop_video(input_dir, output_dir, x, y, w, h):
     videoCapture = cv2.VideoCapture(input_dir)
     fps = videoCapture.get(cv2.cv.CV_CAP_PROP_FPS)
+    origin_size = (int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)),
+                   int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
+    # check the validation of params x,, y, w, h
+    assert(x+w < origin_size[0] and y+h < origin_size[1])
+
     size = (w,h)
-    #size = (int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)),
-    #        int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
     #fourcc = cv2.cv.CV_FOURCC(*'XVID')
+    #fourcc = cv2.cv.FOURCC('M', 'P', '4', 'V')
     fourcc = cv2.cv.FOURCC('8', 'B', 'P', 'S')
     videoWriter  = cv2.VideoWriter(output_dir, fourcc, fps, size, True)
 
     while(videoCapture.isOpened()):
         ret, frame = videoCapture.read()
         if ret==True:
+            cv2.imshow('frame',frame)
             videoWriter.write(frame[y:y+h, x:x+w])
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -65,12 +70,12 @@ def main(arv=None):
     else:
         print('croped image is None')
     """
-    parser.add_argument('--input_dir', default='../../Downloads/usliverseq/volunteer04.avi')
-    parser.add_argument('--output_dir', default='../ExperimentData/converted_volunteer04.avi')
+    parser.add_argument('--input_dir', default='../../Desktop/MOVIE-0001.mp4')
+    parser.add_argument('--output_dir', default='../../Desktop/croped_MOVIE-0001.avi')
     parser.add_argument('--x', type = int, default=300)
     parser.add_argument('--y', type = int, default=300)
-    parser.add_argument('--w', type = int, default=300)
-    parser.add_argument('--h', type = int, default=200)
+    parser.add_argument('--w', type = int, default=50)
+    parser.add_argument('--h', type = int, default=50)
 
     args = parser.parse_args()
     crop_video(args.input_dir, args.output_dir, args.x, args.y, args.w, args.h)
