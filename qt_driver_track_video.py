@@ -2,7 +2,7 @@
 # @Date:   2016-06-13T18:21:07+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   qiaotian
-# @Last modified time: 2016-06-13T18:29:18+08:00
+# @Last modified time: 2016-06-13T18:43:55+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 from __future__ import absolute_import
@@ -42,8 +42,8 @@ def main(argv=None):
         ret, frame = videoCapture.read()
         if ret==True:
             image = frame[np.newaxis, ...]
-            ftrs = features(image)
-            kmeans = KMeans(n_clusters = 3)
+            ftrs = qt_feature.features(image)
+            kmeans = KMeans(n_clusters = 4)
             kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
             disp = image.reshape((image.shape[0]*image.shape[1]*image.shape[2], image.shape[3]))
             for i in xrange(len(kmeans.labels_)):
