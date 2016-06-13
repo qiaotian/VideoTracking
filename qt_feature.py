@@ -4,7 +4,7 @@
 # @Date:   2016-06-01T14:54:45+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-13T10:11:30+08:00
+# @Last modified time: 2016-06-13T13:31:46+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 from __future__ import absolute_import
@@ -71,13 +71,15 @@ def features(image):
 
 
 def main(argv=None):
+    """
     sess = tf.Session()
 
     parser = argparse.ArgumentParser(
         description='Extract and return features from input image',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
-    parser.add_argument('--image', default='../data/test1.jpg')
+    #parser.add_argument('--image', default='../data/test1.jpg')
+    parser.add_argument('--image', default='../../Desktop/test.png')
     args = parser.parse_args()
 
     image = cv2.imread(args.image)/255.0
@@ -93,7 +95,7 @@ def main(argv=None):
     ftrs = features(roi)
 
     # kmeans to cluster
-    kmeans = KMeans(n_clusters=4)
+    kmeans = KMeans(n_clusters=3)
     kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
 
     # show the image
@@ -114,15 +116,20 @@ def main(argv=None):
             disp[i] = [255,255,255]
         else:
             disp[i] = [255, 255, 0]
-        """
-        if kmeans.labels_[i] == 1:
-            disp[i] = [0, 255, 0]
-        else:
-            disp[i] = [0, 0, 0]
-        """
+
     disp.resize(roi.shape[1], roi.shape[2], 3)
     print(disp.shape)
-    cv2.imwrite("../data/culsters_%s_out.jpg" % args.image[5:-4], disp)
+    cv2.imwrite("./culsters_%s_out.jpg" % args.image[-8:-4], disp)
+    """
+    parser.add_argument('--input_dir', default='../ExperimentData/usdata/', help='')
+    parser.add_argument('--output_dir', default='../ExperimentData/usdata/', help='')
+    parser.add_argument('--origin_x', type = int, default=30, help='')
+    parser.add_argument('--origin_y', type = int, default=60, help='')
+    parser.add_argument('--width', type = int, default=480, help='')
+    parser.add_argument('--height', type = int, default=400, help='')
+
+    args = parser.parse_args()
+    crop_video_batch(args.input_dir, args.output_dir, args.origin_x, args.origin_y, args.width, args.height)
 
 if __name__ == '__main__':
     main()

@@ -2,7 +2,7 @@
 # @Date:   2016-06-05T10:21:02+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   root
-# @Last modified time: 2016-06-13T10:11:46+08:00
+# @Last modified time: 2016-06-13T12:55:25+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -58,11 +58,11 @@ def crop_video_batch(input_dir, output_dir, x, y, w, h):
     for root, dirs, files in list_dirs:
         for f in files:
             if f.endswith('mp4'):
-                print f
                 if input_dir.endswith('/'):
                     crop_video(input_dir+f, output_dir+'croped_'+f, x, y, w, h)
                 else:
                     crop_video(input_dir+'/'+f, output_dir+'/croped_'+f, x, y, w, h)
+                print(f, ' has been croped')
     return
 
 def main(arv=None):
@@ -98,10 +98,10 @@ def main(arv=None):
     """
     parser.add_argument('--input_dir', default='../ExperimentData/usdata/', help='')
     parser.add_argument('--output_dir', default='../ExperimentData/usdata/', help='')
-    parser.add_argument('--origin_x', type = int, default=300, help='')
-    parser.add_argument('--origin_y', type = int, default=300, help='')
-    parser.add_argument('--width', type = int, default=50, help='')
-    parser.add_argument('--height', type = int, default=50, help='')
+    parser.add_argument('--origin_x', type = int, default=30, help='')
+    parser.add_argument('--origin_y', type = int, default=60, help='')
+    parser.add_argument('--width', type = int, default=480, help='')
+    parser.add_argument('--height', type = int, default=400, help='')
 
     args = parser.parse_args()
     crop_video_batch(args.input_dir, args.output_dir, args.origin_x, args.origin_y, args.width, args.height)
