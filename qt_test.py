@@ -1,8 +1,8 @@
 # @Author: Tian Qiao <root>
 # @Date:   2016-05-27T07:31:13+08:00
 # @Email:  qiaotian@me.com
-# @Last modified by:   root
-# @Last modified time: 2016-06-12T16:26:39+08:00
+# @Last modified by:   qiaotian
+# @Last modified time: 2016-06-13T18:31:37+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -88,7 +88,7 @@ def pooling(image):
 #logger = logging.getLogger(__name__)
 
 input_filename = '../../Downloads/usliverseq/volunteer04.avi'
-output_filename = './res/' + time.strftime("%m%d-%H-%M-%S") + '.avi'
+output_filename = '../ExperimentData/' + time.strftime("%m%d-%H-%M-%S") + '.avi'
 
 videoCapture = cv2.VideoCapture(input_filename)
 
@@ -159,16 +159,3 @@ while(videoCapture.isOpened()):
 videoCapture.release()
 videoWriter.release()
 cv2.destroyAllWindows()
-
-
-
-# Ultrasound images reader
-# class SeqReader(object):
-#    _fin_data = None;
-#    _cur_obj = None;
-
-#    scenes = None;
-
-#    def __init__(self, fpath):
-#        self.scenes = []
-#        logger.infor('load ultrasound images data file {}'.format(fpath))

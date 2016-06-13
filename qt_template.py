@@ -3,8 +3,8 @@
 # @Author: Tian Qiao <root>
 # @Date:   2016-06-05T14:01:18+08:00
 # @Email:  qiaotian@me.com
-# @Last modified by:   root
-# @Last modified time: 2016-06-12T18:29:23+08:00
+# @Last modified by:   qiaotian
+# @Last modified time: 2016-06-13T18:24:09+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 
@@ -112,9 +112,6 @@ def main():
     quadmesh = ax.pcolormesh(X,Y,cc)
     quadmesh.set_clim(vmin=-0.2, vmax=1.5)
     plt.show()
-
-    fig2 = plt.gcf()
-    plt.show(src)
 
     """ wireframe plot """
     """
