@@ -2,7 +2,7 @@
 # @Date:   2016-06-13T18:21:07+08:00
 # @Email:  qiaotian@me.com
 # @Last modified by:   qiaotian
-# @Last modified time: 2016-06-13T18:43:55+08:00
+# @Last modified time: 2016-06-13T19:23:34+08:00
 # @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 
 from __future__ import absolute_import
@@ -33,19 +33,21 @@ def main(argv=None):
 
     fps = videoCapture.get(cv2.cv.CV_CAP_PROP_FPS)
     size = (int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)),
-                   int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
-
+            int(videoCapture.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT)))
+    print(size)
     fourcc = cv2.cv.FOURCC('8', 'B', 'P', 'S')
     videoWriter  = cv2.VideoWriter(args.output_filename, fourcc, fps, size, True)
 
     while(videoCapture.isOpened()):
         ret, frame = videoCapture.read()
+        frame = frame/255.0
         if ret==True:
             image = frame[np.newaxis, ...]
             ftrs = qt_feature.features(image)
             kmeans = KMeans(n_clusters = 4)
             kmeans.fit(np.reshape(ftrs, (ftrs.shape[0]*ftrs.shape[1]*ftrs.shape[2], ftrs.shape[3])))
-            disp = image.reshape((image.shape[0]*image.shape[1]*image.shape[2], image.shape[3]))
+            #disp = image.reshape((image.shape[0]*image.shape[1]*image.shape[2], image.shape[3]))
+            disp = (np.zeros((image.shape[0]*image.shape[1]*image.shape[2], image.shape[3]))).astype('u1')
             for i in xrange(len(kmeans.labels_)):
                 if kmeans.labels_[i] == 0:
                     disp[i] = [255,0,0]
@@ -62,7 +64,6 @@ def main(argv=None):
                 else:
                     disp[i] = [255, 255, 0]
             disp.resize(image.shape[1], image.shape[2], 3)
-            #cv2.imwrite(args.output_filename, disp)
             videoWriter.write(disp)
 
 if __name__ == '__main__':
