@@ -3,7 +3,7 @@
 @Date:   2016-05-26T21:07:10+08:00
 @Email:  qiaotian@me.com
 @Last modified by:   qiaotian
-@Last modified time: 2016-06-14T13:32:13+08:00
+@Last modified time: 2016-06-14T13:32:40+08:00
 @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 -->
 
@@ -20,7 +20,7 @@ Nine 2D ultrasound sequences of the liver of healthy volunteers were acquired du
 
 [2] V. De Luca, M. Tschannen, G. SzÃ©kely, C. Tanner, "A Learning-based Approach for Fast and Robust Vessel Tracking in Long Ultrasound Sequences", Medical Image Computing and Computer-Assisted Intervention, Springer. volume of LNCS 8149, pp. 518-525, 2013.
 -->
-### Prerequisite:
+### Prerequisite
 CUDA(option), tensorflow, Numpy
 
 ### Results
