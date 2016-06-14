@@ -3,7 +3,7 @@
 @Date:   2016-05-26T21:07:10+08:00
 @Email:  qiaotian@me.com
 @Last modified by:   qiaotian
-@Last modified time: 2016-06-14T13:29:08+08:00
+@Last modified time: 2016-06-14T13:30:04+08:00
 @License: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 -->
 
@@ -27,11 +27,12 @@ CUDA, tensorflow, Numpy
 
 <img src="./res/cluster.jpg" width="200" height="200">
 <img src="./res/features.jpg" width="200" height="200">
+<img src="./res/hightlight_center.gif" width="200" height="200">
 <!--
 <img src="./res/figure_3.png" height="200">
  -->
 
-<img src="./res/hightlight_center.gif" height="200">
+
 
 <!--
 ![clusters](./res/cluster.jpg =300x300)
