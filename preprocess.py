@@ -56,7 +56,7 @@ def convertDataFormat(ipath, opath):
 The label data format:
     | time(s) | horizontal offset(mm) | vertical offset(mm) |
 """
-def imagesProcessing(ipath, opath, fps):
+def imagesProcessing(ipath, opath, fps, roi):
     # ipath is directory of image sequences
     import os
     list_dirs = os.walk(ipath)
@@ -98,9 +98,7 @@ def imagesProcessing(ipath, opath, fps):
             w = image.shape[0]
             h = image.shape[1]
             threshold = 150
-            # roi for sample1 [581, 122, 140, 190]
-            # roi for sample2 [421, 217, 130, 200]
-            roi = [581, 122, 140, 190] # start w, start h, width, height
+
             heart = center(image, threshold, roi, 250.0/941.0)
             y[i,1:3] = heart
 
@@ -119,16 +117,22 @@ def drawShift(ipath):
 
 
 def main():
-    # Parameters
+    '''Parameters'''
     path = '/Users/qiaotian/Downloads/dataset/sample2/'
-    fps = 19 # image frequence per second, sample 1 is 18, sample 2 is 19
+    # image frequence per second
+    fps = 19 # sample 1 is 18, sample 2 is 19
+    # image roi
+    #   roi for sample1 [581, 122, 140, 190]
+    #   roi for sample2 [421, 217, 130, 200]
+    roi = [421, 217, 130, 200] # start w, start h, width, height
 
+    '''Preprocess'''
     # 1. convert the data from origin format to desired format
     convertDataFormat(path+'resp_origin.txt', path+'resp_target.txt')
     print('-> Done converting data format')
 
     # 2. image processing and store the label in label file
-    imagesProcessing(path+'images/', path+'label.txt', fps)
+    imagesProcessing(path+'images/', path+'label.txt', fps, roi)
     print('-> Done processing images')
 
     # 3. plot the shift trend
