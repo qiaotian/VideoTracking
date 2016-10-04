@@ -110,7 +110,6 @@ def imagesProcessing(ipath, opath, fps):
 
 def drawShift(ipath):
     y = pd.read_csv(ipath, sep=',', header=None).as_matrix() # y has three columns
-    #x = np.arange(len(y)/fps)
     x = y[:,0]
     plt.plot(x, y[:,1], color='green', label='horizon')
     plt.plot(x, y[:,2], color='red',   label='vertical')
@@ -121,8 +120,8 @@ def drawShift(ipath):
 
 def main():
     # Parameters
-    path = '/Users/qiaotian/Downloads/dataset/sample1/'
-    fps = 18 # image frequence per second, sample 1 is 18, sample 2 is 19
+    path = '/Users/qiaotian/Downloads/dataset/sample2/'
+    fps = 19 # image frequence per second, sample 1 is 18, sample 2 is 19
 
     # 1. convert the data from origin format to desired format
     convertDataFormat(path+'resp_origin.txt', path+'resp_target.txt')
