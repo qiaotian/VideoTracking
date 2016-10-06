@@ -57,11 +57,14 @@ def imagesProcessing(ipath, opath):
     # ipath is directory of image sequences
     import os
     list_dirs = os.walk(ipath)
+    fps = 19
     for root, dirs, files in list_dirs:
         cnt = int(len(files)) # the size of all label
         y = np.zeros((cnt, 2), dtype=np.integer) # the 1st column is horizon offset and the 2nd is vertical offset
+        y[:,0] = np.linspace(0.0, 1.0/fps*cnt, cnt, endpoint=False)
         for f in files:
             # image processing here
+
             print(f)
         df = pd.DataFrame(y)
         df.to_csv(opath, header=False, index=False)
@@ -79,7 +82,7 @@ def drawShift(ipath):
 
 def main():
     path = '/Users/qiaotian/Downloads/dataset/'
-    
+
     # 1. convert the data from origin format to desired format
     convertDataFormat(path+'resp_origin.txt', path+'resp_target.txt')
 
