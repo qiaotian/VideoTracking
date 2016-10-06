@@ -1,4 +1,4 @@
-""" Data Preprocess
+""" Training and Testing
 Author : QiaoTian
 Date   : 6th Oct 2016
 """
