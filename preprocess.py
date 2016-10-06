@@ -114,8 +114,8 @@ def drawShift(ipath):
     x = y[:,0]
     plt.plot(x, y[:,1], color='green', label='horizon')
     plt.plot(x, y[:,2], color='red',   label='vertical')
-    plt.xlabel('time(s)')
-    plt.ylabel('shift(mm)')
+    plt.xlabel('time (/s)')
+    plt.ylabel('shift (/mm)')
     plt.show()
 
 
@@ -132,11 +132,10 @@ def main():
     imagesProcessing(path+'images/', path+'label.txt', fps)
     print('-> Done processing images')
 
-    # 3.
+    # 3. plot the shift trend
     drawShift(path+'label.txt')
+    print('-> Done drawing shift trend in two dimentions')
 
-    # 3. plot data for basis analysis
-    #X = pd.read_csv(opath)
 
 
 
