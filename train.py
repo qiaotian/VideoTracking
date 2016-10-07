@@ -30,7 +30,8 @@ def main():
     lr.fit(X_train, y_train)
     train_acc = lr.score(X_train, y_train)
     test_acc = lr.score(X_test, y_test)
-    print('-> Done Linear Regression: ', train_acc, test_acc)
+    y_pred = lr.predict(X_test)
+    print('-> Done Linear Regression: ', train_acc, test_acc, len([elem for elem in y_pred-y_test if abs(elem)<1.0])/len(y_test))
 
     # 2.
     rf_params = {'n_estimators':100}
@@ -38,7 +39,8 @@ def main():
     rf.fit(X_train, y_train)
     train_acc = rf.score(X_train, y_train)
     test_acc = rf.score(X_test, y_test)
-    print('-> Done Random Forest Regression: ', train_acc, test_acc)
+    y_pred = rf.predict(X_test)
+    print('-> Done Random Forest Regression: ', train_acc, test_acc, len([elem for elem in y_pred-y_test if abs(elem)<1.0])/len(y_test))
 
     # 3.
     gbdt_params = {'loss':'ls', 'n_estimators':100, 'max_depth':3,\
@@ -48,9 +50,9 @@ def main():
     gbdt.fit(X_train, y_train)
     train_acc = gbdt.score(X_train, y_train)
     test_acc = gbdt.score(X_test, y_test)
-    y_pred = gbdt.predict(X_test, y_test)
-    z = y_pred[abs(y_pred-y_test)<1.0]
-    print('-> Done Gradient Boosting Regression: ', train_acc, test_acc)
+    y_pred = gbdt.predict(X_test)
+
+    print('-> Done Gradient Boosting Regression: ', train_acc, test_acc, len([elem for elem in y_pred-y_test if abs(elem)<1.0])/len(y_test))
 
 if __name__ == '__main__':
     main()
