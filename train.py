@@ -48,6 +48,8 @@ def main():
     gbdt.fit(X_train, y_train)
     train_acc = gbdt.score(X_train, y_train)
     test_acc = gbdt.score(X_test, y_test)
+    y_pred = gbdt.predict(X_test, y_test)
+    z = y_pred[abs(y_pred-y_test)<1.0]
     print('-> Done Gradient Boosting Regression: ', train_acc, test_acc)
 
 if __name__ == '__main__':
