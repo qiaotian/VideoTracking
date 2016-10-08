@@ -123,12 +123,12 @@ def main():
     fps = 19 # sample 1 is 18, sample 2 is 19
     # image roi
     #   roi for sample1 [581, 122, 140, 190]
-    #   roi for sample2 [421, 217, 130, 200]
+    #   nroi for sample2 [421, 217, 130, 200]
     roi = [421, 217, 130, 200] # start w, start h, width, height
 
     '''Preprocess'''
     # 1. convert the data from origin format to desired format
-    convertDataFormat(path+'resp_origin.txt', path+'resp_target.txt')
+    convertDataFormat(path+'resp_origin.txt', path+'feature.txt')
     print('-> Done converting data format')
 
     # 2. image processing and store the label in label file

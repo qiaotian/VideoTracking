@@ -17,7 +17,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.cross_validation import train_test_split
 
 def main():
-    xpath = '/Users/qiaotian/Downloads/dataset/sample1/resp_target.txt'
+    xpath = '/Users/qiaotian/Downloads/dataset/sample1/feature.txt'
     ypath = '/Users/qiaotian/Downloads/dataset/sample1/label.txt'
     y = pd.read_csv(ypath, sep=',', header=None).iloc[:,1]
     X = pd.read_csv(xpath, sep=',', header=None).iloc[0:len(y),:]
