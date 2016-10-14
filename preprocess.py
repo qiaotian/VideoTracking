@@ -128,7 +128,7 @@ def main():
 
     '''Preprocess'''
     # 1. convert the data from origin format to desired format
-    convertDataFormat(path+'resp_origin.txt', path+'feature.txt')
+    convertDataFormat(path+'raw.txt', path+'feature.txt')
     print('-> Done converting data format')
 
     # 2. image processing and store the label in label file

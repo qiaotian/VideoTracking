@@ -24,7 +24,7 @@ def main():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1,
                                                     random_state=9)
-    # 1.
+    # 1. Linear Regressor
     lr_params = {}
     lr = LinearRegression()
     lr.fit(X_train, y_train)
@@ -33,7 +33,7 @@ def main():
     y_pred = lr.predict(X_test)
     print('-> Done Linear Regression: ', train_acc, test_acc, len([elem for elem in y_pred-y_test if abs(elem)<1.0])/len(y_test))
 
-    # 2.
+    # 2. Random Foreset Regressor
     rf_params = {'n_estimators':100}
     rf = RandomForestRegressor(**rf_params)
     rf.fit(X_train, y_train)
@@ -42,7 +42,7 @@ def main():
     y_pred = rf.predict(X_test)
     print('-> Done Random Forest Regression: ', train_acc, test_acc, len([elem for elem in y_pred-y_test if abs(elem)<1.0])/len(y_test))
 
-    # 3.
+    # 3. Gradient Booting Regressor
     gbdt_params = {'loss':'ls', 'n_estimators':100, 'max_depth':3,\
                    'subsample':0.9, 'learning_rate':0.1,\
                    'min_samples_leaf':1, 'random_state':1234}
